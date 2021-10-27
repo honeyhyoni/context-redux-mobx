@@ -8,12 +8,12 @@ const Counter = (): JSX.Element => {
     const dispatch = useDispatch();
 
     const onIncrease = useCallback(() => {
-        dispatch(increase(count))
-    },[count]);
+        dispatch(increase(count));
+    },[count, dispatch]);
 
     const onDecrease = useCallback(() => {
-        dispatch(decrease(count))
-    }, [count])
+        dispatch(decrease(count));
+    }, [count, dispatch])
 
     return (
         <div>
