@@ -1,6 +1,10 @@
 export const INCREASE = 'Count/Increase' as const;
 export const DECREASE = 'Count/Decrease' as const;
 
+export const INCREASE_REQUEST = 'Count/increase/request';
+export const INCREASE_SUCCESS = 'Count/increase/success';
+export const INCREASE_FAIL = 'Count/increase/fail';
+
 const initState: Record<string, any> = {
     count: 0,
     test: null
@@ -21,9 +25,25 @@ const counter = (state = initState, action: Record<string, any>) => {
                 ...state,
                 count: action.count - 1
             };
+        case INCREASE_REQUEST:
+            return {
+                ...state,
+                test: true,
+            }
+        case INCREASE_SUCCESS:
+            return {
+                test: false,
+                count: action.data.count
+            }
+        case INCREASE_FAIL:
+            return {
+                test: false,
+                count: 0
+            }
         default:
             return state;
     }
 }
 
+//todo saga check
 export default counter;
