@@ -7,11 +7,19 @@ export const INCREASE_FAIL = 'Count/increase/fail';
 
 const initState: Record<string, any> = {
     count: 0,
-    test: null
+    test: false
 }
 
 export const increase = (count: number) => ({ type: INCREASE, count });
 export const decrease = (count: number) => ({ type: DECREASE, count });
+
+export const getIncreaseSaga = (params: Record<string, any>) => {
+    console.log(params,'params')
+    return {
+        type: INCREASE_REQUEST,
+        count: params
+    }
+};
 
 const counter = (state = initState, action: Record<string, any>) => {
     switch (action.type) {
@@ -33,7 +41,7 @@ const counter = (state = initState, action: Record<string, any>) => {
         case INCREASE_SUCCESS:
             return {
                 test: false,
-                count: action.data.count
+                count: Number(action.data.count)
             }
         case INCREASE_FAIL:
             return {

@@ -1,10 +1,10 @@
-import { all, fork, put, call, takeLatest } from "redux-saga/effects";
+import { all, fork, put, delay, takeLatest } from "redux-saga/effects";
 import {
     INCREASE_REQUEST,
     INCREASE_SUCCESS,
     INCREASE_FAIL
 } from "../reducer/counter";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
 function getIncreaseAPI(data: any) {
     return axios.get('/test', data)
@@ -12,10 +12,18 @@ function getIncreaseAPI(data: any) {
 
 function * getIncrease (action: any) {
     try {
-        const result: AxiosResponse<any> = yield call(getIncreaseAPI, action.params);
+        console.log(action,'action')
+        const result = {
+            count: action.count + 1
+        }
+        yield delay(100)
         yield put({type: INCREASE_SUCCESS, data: result})
     } catch (e: any) {
-        yield put({type: INCREASE_FAIL, data: e.response.data})
+        const errorTempData = {
+            count: -1
+        }
+        console.log(e);
+        yield put({type: INCREASE_FAIL, data: errorTempData})
     }
 }
 

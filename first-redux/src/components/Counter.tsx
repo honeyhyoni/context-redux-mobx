@@ -1,10 +1,11 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../reducer";
-import {decrease, increase} from "../reducer/counter";
+import {decrease, getIncreaseSaga, increase} from "../reducer/counter";
 
 const Counter = (): JSX.Element => {
     const { count } = useSelector((state: RootState) => state.counter);
+    const { test } = useSelector((state: RootState) => state.counter)
     const dispatch = useDispatch();
 
     const onIncrease = useCallback(() => {
@@ -15,11 +16,24 @@ const Counter = (): JSX.Element => {
         dispatch(decrease(count));
     }, [count, dispatch])
 
+    const sagaIncrease = useCallback(()=>{
+        dispatch((getIncreaseSaga(count)))
+    },[count, dispatch])
+
     return (
         <div>
-            <button onClick={onIncrease}>+</button>
-            <span>{count}</span>
-            <button onClick={onDecrease}>-</button>
+            {
+                !test ?
+                <>
+                    <button onClick={onIncrease}>+</button>
+                    <span>{count}</span>
+                    <button onClick={onDecrease}>-</button>
+                    <br/>
+                    <button onClick={sagaIncrease}>+</button>
+                </>
+                    :
+                    <div>loading</div>
+            }
         </div>
     )
 }
