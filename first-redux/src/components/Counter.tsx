@@ -1,39 +1,35 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../reducer";
-import {decrease, getIncreaseSaga, increase} from "../reducer/counter";
+import {changeBoolean, getUsersThunk, setBoolean} from '../reducer/checkToolkit';
+import {RootState} from "../store";
 
 const Counter = (): JSX.Element => {
-    const { count } = useSelector((state: RootState) => state.counter);
-    const { test } = useSelector((state: RootState) => state.counter)
+    const { check } = useSelector((state: RootState) => state.check);
+    const { users } = useSelector((state: RootState) => state.check);
     const dispatch = useDispatch();
 
-    const onIncrease = useCallback(() => {
-        dispatch(increase(count));
-    },[count, dispatch]);
+    const changeCheck = useCallback(() => {
+        console.log('come?')
+        dispatch(setBoolean({check: !check}))
+    },[check, dispatch]);
 
-    const onDecrease = useCallback(() => {
-        dispatch(decrease(count));
-    }, [count, dispatch])
+    const changeBooleans = useCallback(() => {
+        dispatch(changeBoolean());
+    },[dispatch, check]);
 
-    const sagaIncrease = useCallback(()=>{
-        dispatch((getIncreaseSaga(count)))
-    },[count, dispatch])
+    const getUserArray = useCallback(() => {
+        dispatch(getUsersThunk())
+    },[dispatch, users])
 
     return (
         <div>
-            {
-                !test ?
-                <>
-                    <button onClick={onIncrease}>+</button>
-                    <span>{count}</span>
-                    <button onClick={onDecrease}>-</button>
-                    <br/>
-                    <button onClick={sagaIncrease}>+</button>
-                </>
-                    :
-                    <div>loading</div>
-            }
+            <button onClick={changeCheck}>change check</button>
+            <button onClick={changeBooleans}>change check</button>
+            <div>{check ? 'true': 'false'}</div>
+            <button onClick={getUserArray}>get users</button>
+            {users && users.map((ele, ind) => (
+                <div key={ind}>{ele}</div>
+            ))}
         </div>
     )
 }
